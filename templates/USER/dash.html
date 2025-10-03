@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - Complaint and Registration Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white py-4">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold">User Dashboard</h1>
+            <a href="/logout" class="text-white hover:underline">Logout</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Quick Links -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold mb-4">Quick Actions</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <a href="/file-complaint/" class="bg-blue-600 text-white text-center px-4 py-3 rounded-lg hover:bg-blue-700 transition">File New Complaint</a>
+                <a href="/track-complaint/" class="bg-green-600 text-white text-center px-4 py-3 rounded-lg hover:bg-green-700 transition">Track Complaint</a>
+                <a href="/view-resolutions/" class="bg-purple-600 text-white text-center px-4 py-3 rounded-lg hover:bg-purple-700 transition">View Resolutions</a>
+            </div>
+        </section>
+
+        <!-- Complaints Overview -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold mb-4">Your Complaints Overview</h2>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="border-b">
+                            <th class="py-2">Complaint ID</th>
+                            <th class="py-2">Title</th>
+                            <th class="py-2">Status</th>
+                            <th class="py-2">Date Submitted</th>
+                            <th class="py-2">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b">
+                            <td class="py-2">#12345</td>
+                            <td class="py-2">Service Issue</td>
+                            <td class="py-2 text-yellow-600">Pending</td>
+                            <td class="py-2">2025-10-01</td>
+                            <td class="py-2"><a href="/track-complaint/12345" class="text-blue-600 hover:underline">View</a></td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="py-2">#12346</td>
+                            <td class="py-2">Billing Error</td>
+                            <td class="py-2 text-green-600">Resolved</td>
+                            <td class="py-2">2025-09-28</td>
+                            <td class="py-2"><a href="/track-complaint/12346" class="text-blue-600 hover:underline">View</a></td>
+                        </tr>
+                        <tr>
+                            <td class="py-2">#12347</td>
+                            <td class="py-2">Product Defect</td>
+                            <td class="py-2 text-red-600">In Progress</td>
+                            <td class="py-2">2025-09-25</td>
+                            <td class="py-2"><a href="/track-complaint/12347" class="text-blue-600 hover:underline">View</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Notifications -->
+        <section>
+            <h2 class="text-xl font-semibold mb-4">Notifications</h2>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <ul class="space-y-4">
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">•</span>
+                        <div>
+                            <p class="text-gray-700"><strong>Complaint #12345:</strong> Your complaint has been received and is under review. (2025-10-02)</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">•</span>
+                        <div>
+                            <p class="text-gray-700"><strong>Complaint #12346:</strong> Your complaint has been resolved. Please check the resolution details. (2025-09-30)</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">•</span>
+                        <div>
+                            <p class="text-gray-700"><strong>Complaint #12347:</strong> An update has been provided by the support team. (2025-09-27)</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-4">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 Complaint and Registration Management System. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
