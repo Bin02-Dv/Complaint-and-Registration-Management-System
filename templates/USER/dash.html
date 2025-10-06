@@ -22,7 +22,7 @@
             <h2 class="text-xl font-semibold mb-4">Quick Actions</h2>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <a href="/file-complaint/" class="bg-blue-600 text-white text-center px-4 py-3 rounded-lg hover:bg-blue-700 transition">File New Complaint</a>
-                <a href="/track-complaint/" class="bg-green-600 text-white text-center px-4 py-3 rounded-lg hover:bg-green-700 transition">Track Complaint</a>
+                {% comment %} <a href="/track-complaint/" class="bg-green-600 text-white text-center px-4 py-3 rounded-lg hover:bg-green-700 transition">Track Complaint</a> {% endcomment %}
                 <a href="/user-profile/" class="bg-purple-600 text-white text-center px-4 py-3 rounded-lg hover:bg-purple-700 transition">Profile</a>
             </div>
         </section>
@@ -49,7 +49,7 @@
                             <td class="py-2">{{complaint.description}}</td>
                             <td class="py-2 {% if complaint.status == 'pending' %}text-red-600{% elif complaint.status == 'inprogress' %}text-yellow-600{% else %} text-green-600{% endif %}">{{complaint.status}}</td>
                             <td class="py-2">{{complaint.date}}</td>
-                            <td class="py-2"><a href="/track-complaint/12345" class="text-blue-600 hover:underline">View</a></td>
+                            <td class="py-2"><a href="/track-complaint/{{complaint.id}}" class="text-blue-600 hover:underline">View</a></td>
                         </tr>
                         {% endfor %}
                         {% else %}

@@ -13,7 +13,7 @@ urlpatterns = [
     # user
     path("user-dash/", views.user_dash, name="user-dash"),
     path("file-complaint/", views.file_complaint, name="file-complaint"),
-    path("track-complaint/", views.track_complaint, name="track-complaint"),
+    path("track-complaint/<int:id>", views.track_complaint, name="track-complaint"),
     path("user-profile/", views.user_profile, name="user-profile"),
     path("update-profile/", views.update_profile, name="update-profile"),
     path("update-password/", views.update_password, name="update-password"),

@@ -112,11 +112,26 @@ def file_complaint(request):
             })
     return render(request, "USER/file-complaint.html")
 
-def track_complaint(request):
-    return render(request, "USER/track-complaint.html")
+view = False
+def view_complaint(request, id):
+    view = True
+    complaint = Complaint.objects.filter(id=id).first()
+    context = {
+        "complaint": complaint,
+        "view": view
+    }
+    return render(request, "USER/track-complaint.html", context)
+
+def track_complaint(request, id):
+    complaint = Complaint.objects.filter(id=id).first()
+    context = {
+        "complaint": complaint,
+        "view": view
+    }
+    return render(request, "USER/track-complaint.html", context)
 
 def user_profile(request):
-    profile = AuthModel.objects.get(email=request.user)
+    profile = request.user
     context = {
         "profile": profile
     }
@@ -124,7 +139,7 @@ def user_profile(request):
 
 def update_profile(request):
     if request.method == 'POST':
-        current_user = AuthModel.objects.filter(email=request.user).first()
+        current_user = request.user
         
         full_name = request.POST.get("full_name")
         phone_number = request.POST.get("phone_number")

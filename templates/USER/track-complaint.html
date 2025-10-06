@@ -34,15 +34,15 @@
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <p><strong>Complaint ID:</strong> #12345</p>
-                        <p><strong>Title:</strong> Service Issue</p>
-                        <p><strong>Category:</strong> Service</p>
-                        <p><strong>Date Submitted:</strong> 2025-10-01</p>
+                        <p><strong>Complaint ID:</strong> #{{complaint.id}}</p>
+                        <p><strong>Description:</strong> {{complaint.description}}</p>
+                        <p><strong>Category:</strong> {{complaint.complaint_category}}</p>
+                        <p><strong>Date Submitted:</strong> {{complaint.date}}</p>
                     </div>
                     <div>
-                        <p><strong>Status:</strong> <span class="text-yellow-600 font-semibold">Pending</span></p>
-                        <p><strong>Location:</strong> Main Campus</p>
-                        <p><strong>Description:</strong> The service in the main cafeteria was delayed significantly, causing inconvenience.</p>
+                        <p><strong>Status:</strong> <span class="text-yellow-600 font-semibold">{{complaint.status}}</span></p>
+                        <p><strong>Location:</strong> {{complaint.location}}</p>
+                        {% comment %} <p><strong>Description:</strong> The service in the main cafeteria was delayed significantly, causing inconvenience.</p> {% endcomment %}
                     </div>
                 </div>
             </div>

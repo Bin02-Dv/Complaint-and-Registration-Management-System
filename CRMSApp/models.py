@@ -14,6 +14,9 @@ class AuthModel(AbstractUser):
     
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
+    
+    def __str__(self):
+        return self.full_name
 
 
 class Complaint(models.Model):
@@ -27,3 +30,6 @@ class Complaint(models.Model):
     complaint_files = models.ImageField(upload_to='complaints/', blank=True)
     date = models.DateField(auto_now_add=True)
     status = models.CharField(max_length=50, default='pending')
+    
+    def __str__(self):
+        return self.description
