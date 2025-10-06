@@ -1,61 +1,131 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>File New Complaint - Complaint and Registration Management System</title>
+    {% include "toast/toast.html" %}
+    <link rel="stylesheet" href="{% static 'css/loader.css' %}">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 font-sans flex items-center justify-center min-h-screen">
     <div class="container mx-auto px-4 py-12 max-w-lg">
         <!-- File Complaint Form -->
-        <div class="bg-white p-8 rounded-lg shadow-md">
-            <h2 class="text-2xl font-semibold mb-6 text-center">File New Complaint</h2>
-            <div>
-                <div class="mb-4">
-                    <label for="category" class="block text-gray-700 font-medium mb-2">Complaint Category</label>
-                    <select id="category" name="category" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
-                        <option value="" disabled selected>Select a category</option>
-                        <option value="academic">Academic</option>
-                        <option value="facility">Facility</option>
-                        <option value="service">Service</option>
-                        <option value="other">Other</option>
-                    </select>
+        <form id="fileComplaint" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="bg-white p-8 rounded-lg shadow-md">
+                <h2 class="text-2xl font-semibold mb-6 text-center">File New Complaint</h2>
+                <div>
+                    <div class="mb-4">
+                        <label for="category" class="block text-gray-700 font-medium mb-2">Complaint Category</label>
+                        <select id="category" name="category" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
+                            <option value="" disabled selected>Select a category</option>
+                            <option value="academic">Academic</option>
+                            <option value="facility">Facility</option>
+                            <option value="service">Service</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="description" class="block text-gray-700 font-medium mb-2">Description of the Issue</label>
+                        <textarea id="description" name="description" rows="5" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required placeholder="Provide details about your complaint..."></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label for="location" class="block text-gray-700 font-medium mb-2">Location (Optional)</label>
+                        <select id="location" name="location" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                            <option value="" selected>Not specified</option>
+                            <option value="main-campus">Main Campus</option>
+                            <option value="library">Library</option>
+                            <option value="hostel">Hostel</option>
+                            <option value="admin-building">Admin Building</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    {% comment %} <div class="mb-4">
+                        <label for="date" class="block text-gray-700 font-medium mb-2">Date</label>
+                        <input type="text" id="date" name="date" class="w-full px-4 py-2 border rounded-lg bg-gray-100" value="2025-10-03" readonly>
+                    </div> {% endcomment %}
+                    <div class="mb-6">
+                        <label for="attachment" class="block text-gray-700 font-medium mb-2">Upload Attachment (Optional)</label>
+                        <input type="file" id="attachment" name="attachment" accept="image/*,.pdf,.doc,.docx" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Submit Complaint</button>
                 </div>
-                <div class="mb-4">
-                    <label for="description" class="block text-gray-700 font-medium mb-2">Description of the Issue</label>
-                    <textarea id="description" name="description" rows="5" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required placeholder="Provide details about your complaint..."></textarea>
-                </div>
-                <div class="mb-4">
-                    <label for="location" class="block text-gray-700 font-medium mb-2">Location (Optional)</label>
-                    <select id="location" name="location" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
-                        <option value="" selected>Not specified</option>
-                        <option value="main-campus">Main Campus</option>
-                        <option value="library">Library</option>
-                        <option value="hostel">Hostel</option>
-                        <option value="admin-building">Admin Building</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div class="mb-4">
-                    <label for="date" class="block text-gray-700 font-medium mb-2">Date</label>
-                    <input type="text" id="date" name="date" class="w-full px-4 py-2 border rounded-lg bg-gray-100" value="2025-10-03" readonly>
-                </div>
-                <div class="mb-6">
-                    <label for="attachment" class="block text-gray-700 font-medium mb-2">Upload Attachment (Optional)</label>
-                    <input type="file" id="attachment" name="attachment" accept="image/*,.pdf,.doc,.docx" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
-                </div>
-                <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Submit Complaint</button>
+                <p class="mt-4 text-center text-gray-600">
+                    Back to <a href="/user-dash/" class="text-blue-600 hover:underline">Dashboard</a>
+                </p>
             </div>
-            <p class="mt-4 text-center text-gray-600">
-                Back to <a href="/dashboard" class="text-blue-600 hover:underline">Dashboard</a>
-            </p>
-        </div>
+        </form>
+    </div>
+
+    <div class="loader-container hide-loader">
+        <div class="loader"></div>
+        <div class="loader-text">System Loading...</div>
     </div>
 
     <!-- Script to set current date -->
     <script>
         document.getElementById('date').value = new Date().toISOString().split('T')[0];
+    </script>
+
+
+    <script src="{% static 'js/jquery-3.5.1.js' %}"></script>
+
+    <script>
+
+        $(document).on('submit', '#fileComplaint', function (e){
+            e.preventDefault();
+            var m_success = $(".success");
+            var m_error = $(".error");
+            var m_info = $(".info");
+            var m_text = $(".message");
+
+            var formData = new FormData(this);
+            var loader = document.querySelector(".loader-container");
+
+            loader.classList.remove("hide-loader");
+            $.ajax({
+                type: 'POST',
+                url: "/file-complaint/",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response){
+                    var success = response['success'];
+                    if(success){
+                        m_success.show();
+                        m_error.hide();
+                        m_info.hide();
+
+                        m_text.html('');
+                        m_text.append(response['message']);
+                        m_text.append("Loading....");
+
+                        loader.classList.add("hide-loader");
+
+                        setTimeout(() => {
+                            $(".toast").fadeOut();
+                        }, 5000);
+
+                        window.location.href = '/user-dash/';
+                    }else{
+                        m_error.show();
+                        m_success.hide();
+                        m_info.hide();
+
+                        m_text.html('');
+                        m_text.append(response['message']);
+                        loader.classList.add("hide-loader");
+
+                        setTimeout(() => {
+                            $(".toast").fadeOut();
+                        }, 5000);
+                    }
+
+                }
+            });
+        });
     </script>
 </body>
 </html>

@@ -14,3 +14,16 @@ class AuthModel(AbstractUser):
     
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
+
+
+class Complaint(models.Model):
+    
+    user = models.ForeignKey(AuthModel, on_delete=models.CASCADE)
+    title = models.CharField(max_length=200, blank=True)
+    complaint_category = models.CharField(max_length=50, blank=True)
+    description = models.TextField(max_length=250, blank=True)
+    location = models.CharField(max_length=50, blank=True)
+    
+    complaint_files = models.ImageField(upload_to='complaints/', blank=True)
+    date = models.DateField(auto_now_add=True)
+    status = models.CharField(max_length=50, default='pending')

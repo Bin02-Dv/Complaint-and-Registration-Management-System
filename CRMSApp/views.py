@@ -1,10 +1,14 @@
-from django.shortcuts import render
-from .models import AuthModel
+from django.shortcuts import render, redirect
+from .models import AuthModel, Complaint
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
 # Create your views here.
+
+def logout(request):
+    auth.logout(request)
+    return redirect('/login/')
 
 def index(request):
     return render(request, "index.html")
@@ -16,6 +20,7 @@ def signUp(request):
         phone_number = request.POST.get("phone_number")
         password = request.POST.get("password")
         confirm_password = request.POST.get("confirm_password")
+        profilePicture = request.FILES.get("profilePicture")
         
         if AuthModel.objects.filter(email=email).exists():
             return JsonResponse({
@@ -30,7 +35,7 @@ def signUp(request):
         else:
             AuthModel.objects.create_user(
                 full_name=full_name, email=email, phone_number=phone_number, password=password,
-                role='user'
+                role='user', profile_img=profilePicture, username=email
             )
             return JsonResponse({
                 "message": "Registration Completed successfully...",
@@ -73,13 +78,100 @@ def login(request):
     return render(request, "login.html")
 
 def user_dash(request):
-    return render(request, "USER/dash.html")
+    current_user = request.user
+    complaints = Complaint.objects.filter(user=current_user)
+    
+    context = {
+        "complaints": complaints
+    }
+    return render(request, "USER/dash.html", context)
 
 def file_complaint(request):
+    if request.method == 'POST':
+        current_user = AuthModel.objects.filter(email=request.user).first()
+        
+        category = request.POST.get("category")
+        description = request.POST.get("description")
+        location = request.POST.get("location")
+        attachment = request.FILES.get("attachment")
+        
+        if not category or not description:
+            return JsonResponse({
+                "message": "Sorry category and description are required!!",
+                "success": False
+            })
+        
+        else:
+            Complaint.objects.create(
+                user=current_user, complaint_category=category, description=description, location=location,
+                complaint_files=attachment
+            )
+            return JsonResponse({
+                "message": "Your Complaint has been filed successfully...",
+                "success": True
+            })
     return render(request, "USER/file-complaint.html")
 
 def track_complaint(request):
     return render(request, "USER/track-complaint.html")
 
 def user_profile(request):
-    return render(request, "USER/profile.html")
+    profile = AuthModel.objects.get(email=request.user)
+    context = {
+        "profile": profile
+    }
+    return render(request, "USER/profile.html", context)
+
+def update_profile(request):
+    if request.method == 'POST':
+        current_user = AuthModel.objects.filter(email=request.user).first()
+        
+        full_name = request.POST.get("full_name")
+        phone_number = request.POST.get("phone_number")
+        profilePicture = request.FILES.get("profilePicture")
+        
+        current_user.full_name = full_name
+        current_user.phone_number = phone_number
+        current_user.profile_img = profilePicture
+        
+        current_user.save()
+        
+        return JsonResponse({
+            "message": "Profile Updated successfully...",
+            "success": True
+        })
+            
+    else:
+        return redirect('/user-profile/')
+
+def update_password(request):
+    if request.method == 'POST':
+        current_user = AuthModel.objects.filter(email=request.user).first()
+        
+        old_password = request.POST.get("old_password")
+        new_password = request.POST.get("new_password")
+        confirm_password = request.POST.get("confirm_password")
+        
+        if not current_user.check_password(old_password):
+            return JsonResponse({
+                "message": "Sorry this is not your current password!!",
+                "success": False
+            })
+        
+        elif confirm_password != new_password:
+            return JsonResponse({
+                "message": "Sorry you password and confirm password missed match!!",
+                "success": False
+            })
+        
+        else:
+            current_user.set_password(new_password)
+            current_user.save()
+            auth.logout(request)
+            return JsonResponse({
+                "message": "Your password has been updated successfully...",
+                "success": True
+            })
+        
+    else:
+        return redirect('/user-profile/')

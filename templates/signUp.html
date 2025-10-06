@@ -1,47 +1,117 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Registration - Complaint and Registration Management System</title>
+    {% include "toast/toast.html" %}
+    <link rel="stylesheet" href="{% static 'css/loader.css' %}">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 font-sans flex items-center justify-center min-h-screen">
     <div class="container mx-auto px-4 py-12 max-w-md">
         <!-- Registration Form -->
-        <div class="bg-white p-8 rounded-lg shadow-md">
-            <h2 class="text-2xl font-semibold mb-6 text-center">User Registration</h2>
-            <div>
-                <div class="mb-4">
-                    <label for="fullName" class="block text-gray-700 font-medium mb-2">Full Name</label>
-                    <input type="text" id="fullName" name="fullName" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
+        <form id="signUp" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="bg-white p-8 rounded-lg shadow-md">
+                <h2 class="text-2xl font-semibold mb-6 text-center">User Registration</h2>
+                <div>
+                    <div class="mb-4">
+                        <label for="fullName" class="block text-gray-700 font-medium mb-2">Full Name</label>
+                        <input type="text" id="fullName" name="full_name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
+                        <input type="email" id="email" name="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="phone" class="block text-gray-700 font-medium mb-2">Phone</label>
+                        <input type="tel" id="phone" name="phone_number" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="block text-gray-700 font-medium mb-2">Password</label>
+                        <input type="password" id="password" name="password" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="confirmPassword" class="block text-gray-700 font-medium mb-2">Confirm Password</label>
+                        <input type="password" id="confirmPassword" name="confirm_password" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="profilePicture" class="block text-gray-700 font-medium mb-2">Profile Picture (Optional)</label>
+                        <input type="file" id="profilePicture" name="profilePicture" accept="image/*" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Register</button>
                 </div>
-                <div class="mb-4">
-                    <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
-                    <input type="email" id="email" name="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
-                </div>
-                <div class="mb-4">
-                    <label for="phone" class="block text-gray-700 font-medium mb-2">Phone</label>
-                    <input type="tel" id="phone" name="phone" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
-                </div>
-                <div class="mb-4">
-                    <label for="password" class="block text-gray-700 font-medium mb-2">Password</label>
-                    <input type="password" id="password" name="password" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
-                </div>
-                <div class="mb-4">
-                    <label for="confirmPassword" class="block text-gray-700 font-medium mb-2">Confirm Password</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
-                </div>
-                <div class="mb-6">
-                    <label for="profilePicture" class="block text-gray-700 font-medium mb-2">Profile Picture (Optional)</label>
-                    <input type="file" id="profilePicture" name="profilePicture" accept="image/*" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
-                </div>
-                <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Register</button>
+                <p class="mt-4 text-center text-gray-600">
+                    Already have an account? <a href="/login/" class="text-blue-600 hover:underline">Login here</a>
+                </p>
             </div>
-            <p class="mt-4 text-center text-gray-600">
-                Already have an account? <a href="/login/" class="text-blue-600 hover:underline">Login here</a>
-            </p>
-        </div>
+        </form>
     </div>
+
+    <div class="loader-container hide-loader">
+        <div class="loader"></div>
+        <div class="loader-text">System Loading...</div>
+    </div>
+
+
+    <script src="{% static 'js/jquery-3.5.1.js' %}"></script>
+
+    <script>
+
+        $(document).on('submit', '#signUp', function (e){
+            e.preventDefault();
+            var m_success = $(".success");
+            var m_error = $(".error");
+            var m_info = $(".info");
+            var m_text = $(".message");
+
+            var formData = new FormData(this);
+            var loader = document.querySelector(".loader-container");
+
+            loader.classList.remove("hide-loader");
+            $.ajax({
+                type: 'POST',
+                url: "/signUp/",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response){
+                    var success = response['success'];
+                    if(success){
+                        m_success.show();
+                        m_error.hide();
+                        m_info.hide();
+
+                        m_text.html('');
+                        m_text.append(response['message']);
+                        m_text.append("Loading....");
+
+                        loader.classList.add("hide-loader");
+
+                        setTimeout(() => {
+                            $(".toast").fadeOut();
+                        }, 5000);
+
+                        window.location.href = '/login/';
+                    }else{
+                        m_error.show();
+                        m_success.hide();
+                        m_info.hide();
+
+                        m_text.html('');
+                        m_text.append(response['message']);
+                        loader.classList.add("hide-loader");
+
+                        setTimeout(() => {
+                            $(".toast").fadeOut();
+                        }, 5000);
+                    }
+
+                }
+            });
+        });
+    </script>
 </body>
 </html>

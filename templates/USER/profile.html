@@ -1,9 +1,12 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile - Complaint and Registration Management System</title>
+    {% include "toast/toast.html" %}
+    <link rel="stylesheet" href="{% static 'css/loader.css' %}">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 font-sans">
@@ -21,51 +24,57 @@
         <section class="mb-8">
             <h2 class="text-xl font-semibold mb-4">Personal Details</h2>
             <div class="bg-white p-6 rounded-lg shadow-md">
-                <div>
-                    <div class="mb-4">
-                        <label for="fullName" class="block text-gray-700 font-medium mb-2">Full Name</label>
-                        <input type="text" id="fullName" name="fullName" value="John Doe" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
-                    </div>
-                    <div class="mb-4">
-                        <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
-                        <input type="email" id="email" name="email" value="john.doe@example.com" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
-                    </div>
-                    <div class="mb-4">
-                        <label for="phone" class="block text-gray-700 font-medium mb-2">Phone</label>
-                        <input type="tel" id="phone" name="phone" value="+1234567890" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
-                    </div>
-                    <div class="mb-6">
-                        <label for="profilePicture" class="block text-gray-700 font-medium mb-2">Profile Picture</label>
-                        <div class="flex items-center space-x-4">
-                            <img src="https://via.placeholder.com/100" alt="Profile Picture" class="w-24 h-24 rounded-full">
-                            <input type="file" id="profilePicture" name="profilePicture" accept="image/*" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                <form id="profile" method="POST">
+                    {% csrf_token %}
+                    <div>
+                        <div class="mb-4">
+                            <label for="fullName" class="block text-gray-700 font-medium mb-2">Full Name</label>
+                            <input type="text" id="fullName" name="full_name" value="{{profile.full_name}}" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
                         </div>
+                        <div class="mb-4">
+                            <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
+                            <input type="email" id="email" name="email" value="{{profile.email}}" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" disabled>
+                        </div>
+                        <div class="mb-4">
+                            <label for="phone" class="block text-gray-700 font-medium mb-2">Phone</label>
+                            <input type="tel" id="phone" name="phone_number" value="{{profile.phone_number}}" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                        </div>
+                        <div class="mb-6">
+                            <label for="profilePicture" class="block text-gray-700 font-medium mb-2">Profile Picture</label>
+                            <div class="flex items-center space-x-4">
+                                <img src="{{profile.profile_img.url}}" alt="Profile Picture" class="w-24 h-24 rounded-full">
+                                <input type="file" id="profilePicture" name="profilePicture" accept="image/*" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Save Changes</button>
                     </div>
-                    <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Save Changes</button>
-                </div>
+                </form>
             </div>
         </section>
 
         <!-- Change Password Section -->
         <section>
-            <h2 class="text-xl font-semibold mb-4">Change Password</h2>
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <div>
-                    <div class="mb-4">
-                        <label for="currentPassword" class="block text-gray-700 font-medium mb-2">Current Password</label>
-                        <input type="password" id="currentPassword" name="currentPassword" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
+            <form id="passwordUpdate" method="POST">
+                {% csrf_token %}
+                <h2 class="text-xl font-semibold mb-4">Change Password</h2>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div>
+                        <div class="mb-4">
+                            <label for="currentPassword" class="block text-gray-700 font-medium mb-2">Current Password</label>
+                            <input type="password" id="currentPassword" name="old_password" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="newPassword" class="block text-gray-700 font-medium mb-2">New Password</label>
+                            <input type="password" id="newPassword" name="new_password" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="confirmNewPassword" class="block text-gray-700 font-medium mb-2">Confirm New Password</label>
+                            <input type="password" id="confirmNewPassword" name="confirm_password" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Change Password</button>
                     </div>
-                    <div class="mb-4">
-                        <label for="newPassword" class="block text-gray-700 font-medium mb-2">New Password</label>
-                        <input type="password" id="newPassword" name="newPassword" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
-                    </div>
-                    <div class="mb-6">
-                        <label for="confirmNewPassword" class="block text-gray-700 font-medium mb-2">Confirm New Password</label>
-                        <input type="password" id="confirmNewPassword" name="confirmNewPassword" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
-                    </div>
-                    <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Change Password</button>
                 </div>
-            </div>
+            </form>
         </section>
     </main>
 
@@ -75,5 +84,125 @@
             <p>&copy; 2025 Complaint and Registration Management System. All rights reserved.</p>
         </div>
     </footer>
+
+        <div class="loader-container hide-loader">
+            <div class="loader"></div>
+            <div class="loader-text">System Loading...</div>
+        </div>
+
+
+    <script src="{% static 'js/jquery-3.5.1.js' %}"></script>
+
+    <script>
+
+        $(document).on('submit', '#profile', function (e){
+            e.preventDefault();
+            var m_success = $(".success");
+            var m_error = $(".error");
+            var m_info = $(".info");
+            var m_text = $(".message");
+
+            var formData = new FormData(this);
+            var loader = document.querySelector(".loader-container");
+
+            loader.classList.remove("hide-loader");
+            $.ajax({
+                type: 'POST',
+                url: "/update-profile/",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response){
+                    var success = response['success'];
+                    if(success){
+                        m_success.show();
+                        m_error.hide();
+                        m_info.hide();
+
+                        m_text.html('');
+                        m_text.append(response['message']);
+                        m_text.append("Loading....");
+
+                        loader.classList.add("hide-loader");
+
+                        setTimeout(() => {
+                            $(".toast").fadeOut();
+                        }, 5000);
+
+                    }else{
+                        m_error.show();
+                        m_success.hide();
+                        m_info.hide();
+
+                        m_text.html('');
+                        m_text.append(response['message']);
+                        loader.classList.add("hide-loader");
+
+                        setTimeout(() => {
+                            $(".toast").fadeOut();
+                        }, 5000);
+                    }
+
+                }
+            });
+        });
+    </script>
+
+    <script>
+
+        $(document).on('submit', '#passwordUpdate', function (e){
+            e.preventDefault();
+            var m_success = $(".success");
+            var m_error = $(".error");
+            var m_info = $(".info");
+            var m_text = $(".message");
+
+            var formData = new FormData(this);
+            var loader = document.querySelector(".loader-container");
+
+            loader.classList.remove("hide-loader");
+            $.ajax({
+                type: 'POST',
+                url: "/update-password/",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response){
+                    var success = response['success'];
+                    if(success){
+                        m_success.show();
+                        m_error.hide();
+                        m_info.hide();
+
+                        m_text.html('');
+                        m_text.append(response['message']);
+                        m_text.append("Loading....");
+
+                        loader.classList.add("hide-loader");
+
+                        setTimeout(() => {
+                            $(".toast").fadeOut();
+                        }, 5000);
+
+                        window.location.href = '/login/';
+
+                    }else{
+                        m_error.show();
+                        m_success.hide();
+                        m_info.hide();
+
+                        m_text.html('');
+                        m_text.append(response['message']);
+                        loader.classList.add("hide-loader");
+
+                        setTimeout(() => {
+                            $(".toast").fadeOut();
+                        }, 5000);
+                    }
+
+                }
+            });
+        });
+    </script>
 </body>
 </html>
